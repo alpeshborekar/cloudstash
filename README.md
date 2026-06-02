@@ -1,7 +1,6 @@
 # CloudStash — File Storage Backend
 
-A backend project I built to learn and demonstrate system design concepts like Google Drive / Dropbox.
-
+A cloud file storage backend built to explore file uploads, async processing, caching, and object storage design patterns.
 **Live API Docs → [https://cloudstash-4cb1.onrender.com/api-docs/](https://cloudstash-4cb1.onrender.com/api-docs/)**
 
 > Try it live — register an account, upload a file, see deduplication in action.
