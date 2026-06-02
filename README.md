@@ -18,6 +18,9 @@ A file storage REST API with:
 - File versioning and expiring share links
 - JWT auth with per-user storage quotas
 
+<img width="990" height="1070" alt="cloudstash-architecture" src="https://github.com/user-attachments/assets/f5da20ca-b91c-46d1-a13f-a65f7e41f896" />
+
+
 ---
 
 ## Tech Stack
