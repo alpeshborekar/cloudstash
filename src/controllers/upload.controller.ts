@@ -13,6 +13,7 @@ import {
 } from '../services/upload.service';
 
 import { AuthRequest } from '../models/types';
+import { logger } from '../utils/logger';
 
 import type {
   MultipartInitInput,
@@ -42,22 +43,30 @@ export const uploadController = {
       const stream =
         fs.createReadStream(file.path);
 
-      const result =
-        await uploadFile(
-          req.user.userId,
-          file.originalname,
-          file.mimetype,
-          file.size,
-          stream,
-        );
+      try {
+        const result =
+          await uploadFile(
+            req.user.userId,
+            file.originalname,
+            file.mimetype,
+            file.size,
+            stream,
+          );
 
-      res
-        .status(
-          result.deduplicated
-            ? 200
-            : 201,
-        )
-        .json(result);
+        res
+          .status(
+            result.deduplicated
+              ? 200
+              : 201,
+          )
+          .json(result);
+      } finally {
+        fs.unlink(file.path, (err) => {
+          if (err) {
+            logger.error({ err, path: file.path }, 'Failed to delete temp file');
+          }
+        });
+      }
 
     } catch (err) {
       next(err);
@@ -123,15 +132,23 @@ export const uploadController = {
       const stream =
         fs.createReadStream(file.path);
 
-      const result =
-        await uploadNewVersion(
-          req.user.userId,
-          req.params.fileId,
-          file.size,
-          stream,
-        );
+      try {
+        const result =
+          await uploadNewVersion(
+            req.user.userId,
+            req.params.fileId,
+            file.size,
+            stream,
+          );
 
-      res.status(201).json(result);
+        res.status(201).json(result);
+      } finally {
+        fs.unlink(file.path, (err) => {
+          if (err) {
+            logger.error({ err, path: file.path }, 'Failed to delete temp file');
+          }
+        });
+      }
 
     } catch (err) {
       next(err);

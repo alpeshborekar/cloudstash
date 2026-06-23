@@ -23,6 +23,14 @@ export function errorHandler(
     return;
   }
 
+  if (err instanceof multer.MulterError && err.code === 'LIMIT_UNEXPECTED_FILE') {
+    res.status(400).json({
+      error: 'BAD_REQUEST',
+      message: 'Unexpected file field',
+    });
+    return;
+  }
+
   // Known application errors
   if (err instanceof AppError) {
     if (err.statusCode >= 500) {

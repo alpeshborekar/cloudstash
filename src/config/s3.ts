@@ -6,8 +6,8 @@ const s3Config: ConstructorParameters<typeof S3Client>[0] = {
   region: config.storage.aws.region,
 
   requestHandler: new NodeHttpHandler({
-    connectionTimeout: 3000,
-    socketTimeout: 3000,
+    connectionTimeout: 30_000,
+    socketTimeout: 300_000,
   }),
 };
 

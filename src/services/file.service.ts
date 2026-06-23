@@ -407,10 +407,9 @@ export async function getStorageSummary(
     usedBytes: user.storageUsedBytes.toString(),
     quotaBytes: user.storageQuotaBytes.toString(),
 
-    usedPercent: Number(
-      (user.storageUsedBytes * 100n) /
-      user.storageQuotaBytes,
-    ),
+    usedPercent: Math.round(
+      (Number(user.storageUsedBytes) / Number(user.storageQuotaBytes)) * 10000,
+    ) / 100,
 
     fileCount,
   };

@@ -21,12 +21,14 @@ import type { MultipartInitInput, MultipartCompleteInput } from '../models/schem
 const ALLOWED_MIME = new Set([
   'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
   'application/pdf',
-  'video/mp4', 'video/webm',
-  'audio/mpeg', 'audio/wav',
+  'video/mp4', 'video/webm', 'video/quicktime', 'video/x-m4v', 'video/x-msvideo', 'video/avi',
+  'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/ogg', 'audio/mp4',
   'text/plain', 'text/csv',
-  'application/zip',
+  'application/zip', 'application/x-zip', 'application/x-zip-compressed',
+  'application/x-compressed', 'multipart/x-zip',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/msword', 'application/vnd.ms-excel',
 ]);
 
 //Single-file upload 

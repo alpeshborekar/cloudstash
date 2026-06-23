@@ -4,12 +4,12 @@ import { logger } from '../utils/logger';
 //TTL constants (seconds)
 
 export const TTL = {
-  FILE_META:  5 * 60,   // 5 min — file metadata
-  USER_FILES: 2 * 60,   // 2 min — file listing per user
-  SIGNED_URL: 14 * 60,  // 14 min — slightly less than S3 URL TTL (15min)
+  FILE_META:  5 * 60,   
+  USER_FILES: 2 * 60,  
+  SIGNED_URL: 14 * 60,  
 } as const;
 
-//Key builders — centralised to avoid typos 
+
 
 export const CacheKey = {
   file:      (id: string)     => `file:${id}`,
@@ -19,7 +19,6 @@ export const CacheKey = {
 //Redis client 
 
 function getRedis(): Redis {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { redis } = require('../config/redis');
   return redis as Redis;
 }
@@ -33,7 +32,6 @@ export const cache = {
       if (!val) return null;
       return JSON.parse(val) as T;
     } catch (err) {
-      // Cache errors must NEVER crash the app — degrade gracefully to DB
       logger.warn({ err, key }, 'Cache GET failed — degrading to DB');
       return null;
     }
@@ -57,8 +55,7 @@ export const cache = {
     }
   },
 
-  // Scan + delete all keys matching a glob pattern 
-  async invalidatePattern(pattern: string): Promise<void> {
+ async invalidatePattern(pattern: string): Promise<void> {
     try {
       const keys = await getRedis().keys(pattern);
       if (keys.length) await getRedis().del(...keys);

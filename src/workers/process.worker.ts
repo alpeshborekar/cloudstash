@@ -14,7 +14,6 @@ import { ProcessingJobPayload } from '../models/types';
 // Redis connection
 
 function getRedis() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { redis } = require('../config/redis');
 
   return redis;
@@ -58,11 +57,11 @@ export const processWorker = new Worker<ProcessingJobPayload>(
       'Process job started',
     );
 
-    // Step 1: Accepted
+    //  Accepted
 
     await job.updateProgress(P.ACCEPTED);
 
-    // Step 2: Virus scan
+    // Virus scan
 
     await job.updateProgress(P.SCAN_START);
 
@@ -71,7 +70,6 @@ export const processWorker = new Worker<ProcessingJobPayload>(
       'Running virus scan',
     );
 
-    // Production: replace with ClamAV or AV API call
 
     await new Promise((r) => setTimeout(r, 400));
 
@@ -108,7 +106,7 @@ export const processWorker = new Worker<ProcessingJobPayload>(
       'Scan passed',
     );
 
-    // Step 3: Thumbnail
+    //Thumbnail
 
     await job.updateProgress(P.THUMBNAIL_START);
 
@@ -153,7 +151,7 @@ export const processWorker = new Worker<ProcessingJobPayload>(
           'Thumbnail stored',
         );
       } catch (err) {
-        // Non-fatal — file still accessible without thumbnail
+        
 
         logger.warn(
           { err, fileId },
@@ -164,7 +162,7 @@ export const processWorker = new Worker<ProcessingJobPayload>(
 
     await job.updateProgress(P.THUMBNAIL_DONE);
 
-    // Step 4: Mark ready
+    // Mark ready
 
     await fileRepo.updateStatus(
       fileId,
@@ -178,7 +176,7 @@ export const processWorker = new Worker<ProcessingJobPayload>(
 
     await job.updateProgress(P.DB_UPDATED);
 
-    // Step 5: Complete
+    //Complete
 
     await job.updateProgress(P.COMPLETE);
 

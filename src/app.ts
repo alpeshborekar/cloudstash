@@ -180,10 +180,8 @@ async function bootstrap() {
       'Progress bridge initialised (QueueEvents → Socket.IO)',
     );
 
-    // Background metrics aggregation
     startMetricsCron(60_000);
 
-    // IMPORTANT: Render requires binding to 0.0.0.0
     const PORT =
       process.env.PORT ||
       config.port ||
